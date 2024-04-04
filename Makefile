@@ -17,23 +17,22 @@ clean:
 	go clean
 	rm -f $(BINARY_NAME)
 
-# Run tests
 test:
 	go test ./...
 
-# Lint the Go code
+test-coverage:
+	go test -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out
+
 lint:
 	docker run -t --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:v1.57.2 golangci-lint run -v ./cmd/shortlink-go/...
+
+fmt:
+	go fmt ./...
 
 # Generate Swagger documentation
 swagger:
 	swag init -d ./cmd/shortlink-go/
-
-# Start Docker services (database and Redis)
-docker-up: db-up redis-up
-
-# Stop Docker services
-docker-down: db-down redis-down
 
 ### Database management
 
