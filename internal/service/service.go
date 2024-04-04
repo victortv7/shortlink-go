@@ -4,11 +4,10 @@ import (
 	"context"
 	"errors"
 	"log"
+	"shortlink-go/internal/cache"
 	"shortlink-go/internal/model"
 	"shortlink-go/internal/repository"
 	"shortlink-go/pkg/base62"
-
-	"github.com/redis/go-redis/v9"
 )
 
 const REDIS_KEY_PREFIX = "shortlink:"
@@ -17,10 +16,10 @@ var ErrShortLinkNotFound = errors.New("short link not found")
 
 type Service struct {
 	urlRepo     repository.URLRepository
-	redisClient *redis.Client
+	redisClient cache.RedisClient
 }
 
-func NewService(urlRepo repository.URLRepository, redisClient *redis.Client) *Service {
+func NewService(urlRepo repository.URLRepository, redisClient cache.RedisClient) *Service {
 	return &Service{
 		urlRepo:     urlRepo,
 		redisClient: redisClient,
