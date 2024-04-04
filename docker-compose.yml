@@ -18,6 +18,7 @@ services:
       retries: 2
   redis:
     image: redis:alpine
+    command: redis-server --maxmemory 100mb --maxmemory-policy allkeys-lru
     restart: always
     ports:
       - "6379:6379"

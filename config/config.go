@@ -27,7 +27,7 @@ type Config struct {
 	DBName     string `envconfig:"DB_NAME" default:"db"`
 
 	RedisHost     string `envconfig:"REDIS_HOST" default:"localhost"`
-	RedisPort     int    `envconfig:"REDIS_PORT" default:"6379"`
+	RedisPort     string `envconfig:"REDIS_PORT" default:"6379"`
 	RedisPassword string `envconfig:"REDIS_PASSWORD" default:""`
 	RedisDB       int    `envconfig:"REDIS_DB" default:"0"`
 }
