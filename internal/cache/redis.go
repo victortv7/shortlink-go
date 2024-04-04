@@ -4,9 +4,15 @@ import (
 	"context"
 	"log"
 	"shortlink-go/config"
+	"time"
 
 	"github.com/redis/go-redis/v9"
 )
+
+type RedisClient interface {
+	Set(ctx context.Context, key string, value interface{}, expiration time.Duration) *redis.StatusCmd
+	Get(ctx context.Context, key string) *redis.StringCmd
+}
 
 func NewRedisClient(cfg *config.Config) *redis.Client {
 	rdb := redis.NewClient(&redis.Options{

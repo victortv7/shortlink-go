@@ -1,5 +1,3 @@
-// internal/repository/pgurlrepository.go
-
 package repository
 
 import (

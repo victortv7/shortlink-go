@@ -9,10 +9,10 @@ import (
 )
 
 type Handler struct {
-	service *service.Service
+	service service.IService
 }
 
-func NewHandler(srv *service.Service) *Handler {
+func NewHandler(srv service.IService) *Handler {
 	return &Handler{
 		service: srv,
 	}
@@ -35,10 +35,6 @@ func (h *Handler) RegisterRoutes(r *gin.Engine) {
 // @Router /health [get]
 func (h *Handler) HealthCheck(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"status": "ok"})
-}
-
-type CreateLinkRequest struct {
-	LongURL string `json:"long_url" binding:"required,url"` // The "url" tag validates that the field is a valid URL.
 }
 
 // CreateShortLink creates a new short link
@@ -120,5 +116,10 @@ func (h *Handler) GetStats(ctx *gin.Context) {
 		}
 		return
 	}
-	ctx.JSON(http.StatusOK, stats)
+	res := GetStatsResponse{
+		LongURL:     stats.LongURL,
+		ShortLink:   shortLink,
+		AccessCount: stats.AccessCount,
+	}
+	ctx.JSON(http.StatusOK, res)
 }
