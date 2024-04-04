@@ -1,0 +1,134 @@
+definitions:
+  handler.CreateLinkRequest:
+    properties:
+      long_url:
+        description: The "url" tag validates that the field is a valid URL.
+        type: string
+    required:
+    - long_url
+    type: object
+info:
+  contact: {}
+paths:
+  /{shortLink}:
+    get:
+      consumes:
+      - application/json
+      description: Redirects the request to the original long URL based on the provided
+        short link
+      parameters:
+      - description: Short Link
+        in: path
+        name: shortLink
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "307":
+          description: Location header with the original URL
+          schema:
+            type: header
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect to the original URL
+      tags:
+      - links
+  /create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new short link from a given long URL
+      parameters:
+      - description: Create Link Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateLinkRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new short link
+      tags:
+      - links
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Get the health status of the service
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Show service health status
+      tags:
+      - health
+  /stats/{shortLink}:
+    get:
+      consumes:
+      - application/json
+      description: Get the statistics of a short link, including its original URL
+        and access count
+      parameters:
+      - description: Short Link
+        in: path
+        name: shortLink
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get short link statistics
+      tags:
+      - stats
+swagger: "2.0"
